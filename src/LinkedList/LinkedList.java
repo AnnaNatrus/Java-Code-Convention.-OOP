@@ -2,72 +2,231 @@ package test2;
 
 public class LinkedList {
 
-	class Node {
-		public int data;
-		public Node next;
-	 
-		public void displayNodeData() {
-			System.out.println("{ " + data + " } ");
+		private class Node {
+			int data;
+			Node next;
 		}
-	}
-	 
-	public class SinglyLinkedList {
+
 		private Node head;
-	 
-		public boolean isEmpty() {
-			return (head == null);
+		private Node tail;
+		private int size;
+
+		public int size() {
+			return this.size;
 		}
-	 
-		// used to insert a node at the start of linked list
-		public void insertFirst(int data) {
-			Node newNode = new Node();
-			newNode.data = data;
-			newNode.next = head;
-			head = newNode;
+
+		public int getFirst() {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
+			}
+
+			return this.head.data;
+
 		}
-	 
-		// used to delete node from start of linked list
-		public Node deleteFirst() {
-			Node temp = head;
-			head = head.next;
-			return temp;
+
+		public int getLast() {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
+			}
+
+			return this.tail.data;
+
 		}
-	 
-		// Use to delete node after particular node
-		public void deleteAfter(Node after) {
-			Node temp = head;
-			while (temp.next != null && temp.data != after.data) {
+
+		public int getAt(int idx) {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
+			}
+
+			if (idx < 0 || idx >= this.size) {
+				System.out.println("Invalid Index.");
+			}
+
+			Node temp = this.head;
+
+			for (int i = 1; i <= idx; i++) {
 				temp = temp.next;
 			}
-			if (temp.next != null)
-				temp.next = temp.next.next;
+
+			return temp.data;
+
 		}
-	 
-		// used to insert a node at the start of linked list
-		public void insertLast(int data) {
-			Node current = head;
-			while (current.next != null) {
-				current = current.next; // we'll loop until current.next is null
+
+		private Node getNodeAt(int idx) {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
 			}
-			Node newNode = new Node();
-			newNode.data = data;
-			current.next = newNode;
-		}
-	 
-		// For printing Linked List		
-	public void printLinkedList() {
-		public void printLinkedList() {
-			System.out.println("Printing LinkedList (head --> last) ");
-			Node current = head;
-			while (current != null) {
-				current.displayNodeData();
-				current = current.next;
+
+			if (idx < 0 || idx >= this.size) {
+				System.out.println("Invalid Index.");
 			}
-			System.out.println();
+
+			Node temp = this.head;
+
+			for (int i = 1; i <= idx; i++) {
+				temp = temp.next;
+			}
+
+			return temp;
+
 		}
-	}
+
+		public void addLast(int item) {
+
+			// create
+			Node nn = new Node();
+			nn.data = item;
+			nn.next = null;
+
+			// attach
+			if (this.size > 0)
+				this.tail.next = nn;
+
+			// dm update
+			if (this.size == 0) {
+				this.head = nn;
+				this.tail = nn;
+				this.size += 1;
+			} else {
+				this.tail = nn;
+				this.size += 1;
+			}
+
+		}
+
+		public void addFirst(int item) {
+
+			// create
+			Node nn = new Node();
+			nn.data = item;
+			nn.next = null;
+
+			// attach
+			nn.next = this.head;
+
+			// dm update
+			if (this.size == 0) {
+				this.head = nn;
+				this.tail = nn;
+				this.size++;
+			} else {
+				this.head = nn;
+				this.size++;
+			}
+
+		}
+
+		public void addAt(int item, int idx) {
+
+			if (idx < 0 || idx > this.size) {
+				System.out.println("Invalid Index.");
+			}
+
+			if (idx == 0) {
+				addFirst(item);
+			} else if (idx == this.size) {
+				addLast(item);
+			} else {
+
+				// create
+				Node nn = new Node();
+				nn.data = item;
+				nn.next = null;
+
+				// attach
+				Node nm1 = getNodeAt(idx - 1);
+				Node np1 = nm1.next;
+
+				nm1.next = nn;
+				nn.next = np1;
+
+				// dm
+				this.size++;
+			}
+
+		}
+
+		public int removeFirst() {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
+			}
+
+			Node temp = this.head;
+
+			if (this.size == 1) {
+				this.head = null;
+				this.tail = null;
+				this.size = 0;
+			} else {
+				this.head = this.head.next;
+				this.size--;
+			}
+			return temp.data;
+		}
+
+		public int removeLast() {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
+			}
+
+			Node temp = this.tail;
+
+			if (this.size == 1) {
+				this.head = null;
+				this.tail = null;
+				this.size = 0;
+			} else {
+				Node sm2 = getNodeAt(this.size - 2);
+				sm2.next = null;
+				this.tail = sm2;
+				this.size--;
+			}
+			return temp.data;
+		}
+
+		public int removeAt(int idx) {
+
+			if (this.size == 0) {
+				System.out.println("Is Empty.");
+			}
+
+			if (idx < 0 || idx >= this.size) {
+				System.out.println("Invalid Index.");
+			}
+
+			if (idx == 0) {
+				return removeFirst();
+			} else if (idx == this.size - 1) {
+				return removeLast();
+
+			} else {
+
+				Node nm1 = getNodeAt(idx - 1);
+				Node n = nm1.next;
+				Node np1 = n.next;
+
+				nm1.next = np1;
+				this.size--;
+				return n.data;
+
+			}
+
+		}
+
+		public void display() {
+			Node temp = this.head;
+			while (temp != null) {
+				System.out.print(temp.data + " ");
+				temp = temp.next;
+			}
+
+		}
 		
-	}
-	
-	
-}
+}	
+		
