@@ -9,4 +9,4 @@
 
 [HomeTask 3.3](/src/LinkedList)
 
-[HomeTask 3.3](/src/HashMap)
+[HomeTask 3.4](/src/HashMap)
